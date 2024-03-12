@@ -281,7 +281,29 @@ function loadApp() {
 	});
 
 	// URIs - Format #/page/1 
+Hash.on('^page\/([0-9]*)$', {
+		yep: function(path, parts) {
+			var page = parts[1];
 
+			if (page!==undefined) {
+				if ($('.magazine').turn('is'))
+					$('.magazine').turn('page', page);
+			}
+
+		},
+		nop: function(path) {
+
+			if ($('.magazine').turn('is'))
+				$('.magazine').turn('page', 1);
+		}
+	});
+
+
+	$(window).resize(function() {
+		resizeViewport();
+	}).bind('orientationchange', function() {
+		resizeViewport();
+	});
 
 	// Events for thumbnails
 
@@ -335,35 +357,7 @@ function loadApp() {
 
 	// Regions
 
-	if ($.isTouch) {
-		$('.magazine').bind('touchstart', regionClick);
-	} else {
-		$('.magazine').click(regionClick);
-	}
-
-	// Events for the next button
-
-	$('.next-button').bind($.mouseEvents.over, function() {
-		
-		$(this).addClass('next-button-hover');
-
-	}).bind($.mouseEvents.out, function() {
-		
-		$(this).removeClass('next-button-hover');
-
-	}).bind($.mouseEvents.down, function() {
-		
-		$(this).addClass('next-button-down');
-
-	}).bind($.mouseEvents.up, function() {
-		
-		$(this).removeClass('next-button-down');
-
-	}).click(function() {
-		
-		$('.magazine').turn('next');
-
-	});
+	
 
 	// Events for the next button
 	
